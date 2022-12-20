@@ -11,22 +11,26 @@ public class playerController : MonoBehaviour
     public Text uitWelcome;
     public Text uitDial;
     public Text uitPickUp;
-    private AudioSource audioPickUp;
+    public AudioSource audioPickUp;
+    public AudioSource factoryBG;
+    public AudioSource defaultBGM;
+    //AudioSource audioPickUp : AudioSource;
+
 
     private Rigidbody rb;
 
     public int pickUpCount;
     public int lifeCount = 3;
-    Vector3 originalPos;
+    //Vector3 originalPos;
 
     public Text uitTimer;
     private float secondsCount;
     private int minuteCount;
     private int hourCount;
-    public Text uitRecord;
-    private float recordSeconds;
-    private int recordMinute;
-    private int recordHour;
+    //public Text uitRecord;
+    //private float recordSeconds = 50;
+    //private int recordMinute = 50;
+    //private int recordHour = 1;
     public GameObject finalCastle;
     public Text uitStats;
 
@@ -45,15 +49,15 @@ public class playerController : MonoBehaviour
 
     void Awake()
     {
-        if (PlayerPrefs.HasKey("secondsCount")) //Only checking if it has a record for seconds since if it has that, it should have fulfilled the other requirements to have an updating record. But, may need to add && minuteCount && hourCount... Just maybe.
-        {
-            recordSeconds = PlayerPrefs.GetFloat("secondsCount");
-            recordMinute = PlayerPrefs.GetInt("minuteCount");
-            recordHour = PlayerPrefs.GetInt("hourCount");
-        }
-        PlayerPrefs.SetFloat("recordSeconds", secondsCount);
-        PlayerPrefs.SetInt("recordMinute", minuteCount);
-        PlayerPrefs.SetInt("recordHour", hourCount);
+        //if (PlayerPrefs.HasKey("secondsCount")) //Only checking if it has a record for seconds since if it has that, it should have fulfilled the other requirements to have an updating record. But, may need to add && minuteCount && hourCount... Just maybe.
+        //{
+            //recordSeconds = PlayerPrefs.GetFloat("secondsCount");
+            //recordMinute = PlayerPrefs.GetInt("minuteCount");
+            //recordHour = PlayerPrefs.GetInt("hourCount");
+        //}
+        //PlayerPrefs.SetFloat("recordSeconds", secondsCount);
+        //PlayerPrefs.SetInt("recordMinute", minuteCount);
+        //PlayerPrefs.SetInt("recordHour", hourCount);
     }
 
     // Update is called once per frame
@@ -118,20 +122,20 @@ public class playerController : MonoBehaviour
             if (pickUpCount == 10)
             {
                 finalCastle.SetActive(true);
-                uitStats.text = "Congratulations! Your record run was " + recordHour + "h:" + recordMinute + "m:" + (int)recordSeconds + "s! This run was " + hourCount + "h:" + minuteCount + "m:" + (int)secondsCount + "s";
+                uitStats.text = "Congratulations! Your run was " + hourCount + "h:" + minuteCount + "m:" + (int)secondsCount + "s";
                 uitStats.enabled = true;
-                if (hourCount < PlayerPrefs.GetInt("recordHour"))
-                {
-                    if (minuteCount < PlayerPrefs.GetInt("recordMinute"))
-                    {
-                        if (secondsCount < PlayerPrefs.GetFloat("recordSeconds"))
-                        {
-                            PlayerPrefs.SetInt("hourCount", hourCount);
-                            PlayerPrefs.SetInt("minuteCount", minuteCount);
-                            PlayerPrefs.SetFloat("secondsCount", secondsCount);
-                        }
-                    }
-                }
+                //if (hourCount < PlayerPrefs.GetInt("recordHour"))
+                //{
+                //    if (minuteCount < PlayerPrefs.GetInt("recordMinute"))
+                //    {
+                //        if (secondsCount < PlayerPrefs.GetFloat("recordSeconds"))
+                //        {
+                //            PlayerPrefs.SetInt("hourCount", hourCount);
+                //            PlayerPrefs.SetInt("minuteCount", minuteCount);
+                //            PlayerPrefs.SetFloat("secondsCount", secondsCount);
+                //        }
+                //    }
+                //}
             }
         }
 
@@ -153,7 +157,7 @@ public class playerController : MonoBehaviour
         }
         if (other.gameObject.CompareTag("Pug2"))
         {
-            uitDial.text = "Have a fruit! I think there's 10 on Arkosa...";
+            uitDial.text = "Have a fruit! There's 10 to collect on Arkosa!";
             uitDial.enabled = true;
         }
         if (other.gameObject.CompareTag("Pug3"))
@@ -178,10 +182,36 @@ public class playerController : MonoBehaviour
             }
             uitDial.enabled = true;
         }
+        if (other.gameObject.CompareTag("InFactory"))
+        {
+            defaultBGM.Stop();
+            factoryBG.Play();
+                //if (defaultBGM.volume > 0.1)
+                //{
+                //    defaultBGM.volume -= 0.50f * Time.deltaTime;
+                //}
+                //if (factoryBG.volume < 0.2)
+                //{
+                //    factoryBG.volume += 0.50f * Time.deltaTime;
+                //}
+        }
     }
 
     private void OnTriggerExit(Collider other)
     {
         uitDial.enabled = false;
+        if (other.gameObject.CompareTag("InFactory"))
+        {
+            factoryBG.Stop();
+            defaultBGM.Play();
+            //if (factoryBG.volume > 0.1)
+            //{
+            //    factoryBG.volume -= 0.50f * Time.deltaTime;
+            //}
+            //if (defaultBGM.volume < 0.4)
+            //{
+            //    defaultBGM.volume += 0.50f * Time.deltaTime;
+            //}
+        }
     }
 }

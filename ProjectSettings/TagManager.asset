@@ -6,6 +6,14 @@ TagManager:
   tags:
   - Fire
   - Loader
+  - Pug1
+  - Pug2
+  - Pug3
+  - PickUps
+  - Portal
+  - Water
+  - Pug4
+  - Pug5
   layers:
   - Default
   - TransparentFX
